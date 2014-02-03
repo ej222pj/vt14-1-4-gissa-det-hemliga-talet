@@ -3,7 +3,7 @@
   <Class Name="hemliga_talet.Model.SecretNumber">
     <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAACAUAAAAUAAAIAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAACAEAAAAEAAAAAAAAAAAAAAABAAAA=</HashCode>
       <FileName>Model\SecretNumber.cs</FileName>
     </TypeIdentifier>
   </Class>
