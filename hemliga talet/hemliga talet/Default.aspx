@@ -31,6 +31,12 @@
             <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
         </div>
 
+        <asp:PlaceHolder ID="ResultPlaceHolder" runat="server" Visible="false">
+            <asp:Label ID="HelpTextLable" runat="server" Text=""></asp:Label>
+            <asp:Label ID="PrevGuessLabel" runat="server" Text=""></asp:Label>
+
+        </asp:PlaceHolder>
+
 
     </div>
     </form>

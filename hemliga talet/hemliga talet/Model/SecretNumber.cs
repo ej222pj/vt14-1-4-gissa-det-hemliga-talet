@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 
@@ -17,46 +18,78 @@ namespace hemliga_talet.Model
         public int Count { get; set; }
         public int? Number
         {
-            get { return _number; }
+            get
+            {
+                if (CanMakeGuess)
+                {
+                    return null;
+                }
+                else
+                {
+                    return _number;
+                }
+            }
         }
         public Outcome Outcome { get; set; }
-        public IEnumerable<int> PreviousGuesses
+        public ReadOnlyCollection<int> PreviousGuesses
         {
-            get { return _previousGuesses; }
+            get { return _previousGuesses.AsReadOnly(); }
         }
 
         public void Initialize()
-        {     
-            Count = 0;
+        {
+            if (PreviousGuesses.Count >= 1) 
+            {
+                _previousGuesses.Clear();
+            }
+            CanMakeGuess = true;
+            Outcome = Outcome.Indefine;
+
             Random randomNumber = new Random();
             _number = randomNumber.Next(1, 101);
-            
         }
         public Outcome MakeGuess(int guess)
         {
-            
+
             if (guess < 1 || guess > 100 || Count > MaxNumberOfGuesses)
             {
                 throw new ArgumentOutOfRangeException();
             }
-            else
+            if (Count >= 1) 
             {
-                if (guess > _number)
+                if (PreviousGuesses.Contains(guess))
                 {
-                    return Outcome.High;
+                    CanMakeGuess = true;
+                    return Outcome.PreviousGuess;
                 }
-                else if (guess < _number)
-                {
-                    return Outcome.Low;
-                }
-                else
-                {
-                    return Outcome.Correct;
-                }
+            }
+            _previousGuesses.Add(guess);
+            Count = PreviousGuesses.Count;
+            if (guess == _number)
+            {
+                CanMakeGuess = false;
+                return Outcome.Correct;
+            }
+            if (Count == MaxNumberOfGuesses) 
+            {
+                CanMakeGuess = false;
+                return Outcome.NoMoreGuesses;
+            }
+            if (guess < _number)
+            {
+                CanMakeGuess = true;
+                return Outcome.Low;
+            }
+            if (guess > _number)
+            {
+                CanMakeGuess = true;
+                return Outcome.High;
             }
         }
         public SecretNumber()
         {
+            List<int> PreviousGuesses = new List<int>();
+            _previousGuesses = PreviousGuesses;
             Initialize();
         }
     }
