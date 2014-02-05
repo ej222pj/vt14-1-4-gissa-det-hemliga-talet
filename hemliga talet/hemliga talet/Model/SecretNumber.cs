@@ -7,15 +7,26 @@ using System.Web;
 namespace hemliga_talet.Model
 {
     public enum Outcome { Indefine, Low, High, Correct, NoMoreGuesses, PreviousGuess }
+    [Serializable]
     public class SecretNumber
     {
 
         private int _number;
-        private List<int> _previousGuesses = new List<int>();
+        private List<int> _previousGuesses;
         public const int MaxNumberOfGuesses = 7;
 
-        public bool CanMakeGuess { get; set; }
-        public int Count { get; set; }
+        public bool CanMakeGuess 
+        {
+            get
+            {
+                return !(Count >= MaxNumberOfGuesses || Outcome == Outcome.Correct);
+            }
+        }
+        public int Count
+        {
+            get;
+            private set;
+        }
         public int? Number
         {
             get
@@ -30,67 +41,74 @@ namespace hemliga_talet.Model
                 }
             }
         }
-        public Outcome Outcome { get; set; }
+        public Outcome Outcome { get; private set; }
         public ReadOnlyCollection<int> PreviousGuesses
         {
-            get { return _previousGuesses.AsReadOnly(); }
-        }
-
-        public void Initialize()
-        {
-            if (PreviousGuesses.Count >= 1) 
-            {
-                _previousGuesses.Clear();
-            }
-            CanMakeGuess = true;
-            Outcome = Outcome.Indefine;
-
-            Random randomNumber = new Random();
-            _number = randomNumber.Next(1, 101);
-        }
-        public Outcome MakeGuess(int guess)
-        {
-
-            if (guess < 1 || guess > 100 || Count > MaxNumberOfGuesses)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-            if (Count >= 1) 
-            {
-                if (PreviousGuesses.Contains(guess))
-                {
-                    CanMakeGuess = true;
-                    return Outcome.PreviousGuess;
-                }
-            }
-            _previousGuesses.Add(guess);
-            Count = PreviousGuesses.Count;
-            if (guess == _number)
-            {
-                CanMakeGuess = false;
-                return Outcome.Correct;
-            }
-            if (Count == MaxNumberOfGuesses) 
-            {
-                CanMakeGuess = false;
-                return Outcome.NoMoreGuesses;
-            }
-            if (guess < _number)
-            {
-                CanMakeGuess = true;
-                return Outcome.Low;
-            }
-            if (guess > _number)
-            {
-                CanMakeGuess = true;
-                return Outcome.High;
-            }
+            get { return new ReadOnlyCollection<int>(_previousGuesses); }
         }
         public SecretNumber()
         {
-            List<int> PreviousGuesses = new List<int>();
-            _previousGuesses = PreviousGuesses;
+            _previousGuesses = new List<int>(MaxNumberOfGuesses);
             Initialize();
         }
+        public void Initialize()
+        {
+            Random randomNumber = new Random();
+            _number = randomNumber.Next(1, 101);
+            Count = 0;
+            _previousGuesses.Clear();
+           
+            Outcome = Outcome.Indefine;
+
+           
+        }
+        public Outcome MakeGuess(int guess)
+        {
+            if (CanMakeGuess)
+            {
+                if (guess >= 1 && guess <= 100)
+                {
+                    
+                    if (PreviousGuesses.Contains(guess))
+                    {
+                        Outcome = Outcome.PreviousGuess;
+                        return Outcome.PreviousGuess;
+                    }
+                    _previousGuesses.Add(guess);
+
+                    Count += 1;
+                    if (Count == MaxNumberOfGuesses)
+                    {
+                        Outcome = Outcome.NoMoreGuesses;
+                        return Outcome.NoMoreGuesses;
+                    }
+                    
+                    if (guess < _number)
+                    {
+                        Outcome = Outcome.Low;
+                        return Outcome.Low;
+                    }
+                    else if (guess > _number)
+                    {
+                        Outcome = Outcome.High;
+                        return Outcome.High;
+                    }
+                    else
+                    {
+                        Outcome = Outcome.Correct;
+                        return Outcome.Correct;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+            else 
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+        
     }
 }
