@@ -48,17 +48,20 @@ namespace hemliga_talet.Model
         }
         public SecretNumber()
         {
+            //Initierar en ny lista
             _previousGuesses = new List<int>(MaxNumberOfGuesses);
+            //Ropar på Initialize metoden
             Initialize();
         }
         public void Initialize()
         {
+            //Nytt nummer
             Random randomNumber = new Random();
             _number = randomNumber.Next(1, 101);
+            //Nollställer Count
             Count = 0;
+            //Tar bort alla gamla gissningar
             _previousGuesses.Clear();
-           
-            Outcome = Outcome.Indefine;
         }
         public Outcome MakeGuess(int guess)
         {
