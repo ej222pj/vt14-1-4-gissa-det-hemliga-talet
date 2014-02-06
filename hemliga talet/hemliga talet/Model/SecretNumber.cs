@@ -59,8 +59,6 @@ namespace hemliga_talet.Model
             _previousGuesses.Clear();
            
             Outcome = Outcome.Indefine;
-
-           
         }
         public Outcome MakeGuess(int guess)
         {
@@ -76,7 +74,7 @@ namespace hemliga_talet.Model
                     }
                     _previousGuesses.Add(guess);
 
-                    Count += 1;
+                    Count++;
                     if (Count == MaxNumberOfGuesses)
                     {
                         Outcome = Outcome.NoMoreGuesses;

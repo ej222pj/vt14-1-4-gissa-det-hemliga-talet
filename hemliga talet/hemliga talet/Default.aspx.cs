@@ -44,7 +44,7 @@ namespace hemliga_talet
 
                 int input = int.Parse(Input.Text);
 
-                //Ropar på MakeGuess i secretnumber classen
+                //Ropar på MakeGuess i secretnumber classen.
                 SecretNumber.MakeGuess(input);
 
                 if (SecretNumber.Outcome == Outcome.NoMoreGuesses)
