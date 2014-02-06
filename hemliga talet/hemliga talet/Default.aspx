@@ -11,36 +11,36 @@
     <form id="form1" runat="server">
     <div>
         <h1>Gissa det hemliga talet</h1>
-        <%-- Felmeddelande 
+        <%-- Felmeddelande --%>
         <div>
-            <asp:ValidationSummary ID="ValidationSummary1" runat="server"  HeaderText="Ett fel inträffade. Korrigera felet och gör ett nytt försök" CssClass="error" />
+            <asp:ValidationSummary ID="ValidationSummary" runat="server"  HeaderText="Ett fel inträffade. Korrigera felet och gör ett nytt försök" CssClass="error" />
         </div>
---%>
+
         <%-- Skriv in tal --%>
         <div>
             <asp:Label ID="Label1" runat="server" Text="Label">Gissa på ett tal mellan 1 och 100</asp:Label>
         </div>
 
         <div>
-            <asp:TextBox ID="Input" runat="server" Enabled="False"></asp:TextBox>
+            <asp:TextBox ID="Input" runat="server" Enabled="True" autofocus="autofocus"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Ett tal måste anges" ControlToValidate="Input"  CssClass="error" Text="*" Display="Dynamic" />
                 <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Ange ett tal mellan 1-100" MaximumValue="100" MinimumValue="1" ControlToValidate="Input" Display="Dynamic"  CssClass="error" ClientIDMode="AutoID" Type="Integer" Text="*" />
         </div>
         <%-- Skicka talet --%>
         <div>
-            <asp:Button ID="SendGuessButton" runat="server" Text="Guess" OnClick="Guess_Click"  Enabled="False" />
+            <asp:Button ID="SendGuessButton" runat="server" Text="Guess" OnClick="Guess_Click"/>
         </div>
 
+        <%--Visa felmedelande --%>
         <asp:PlaceHolder ID="ResultPlaceHolder" runat="server" Visible="false">
             <p><asp:Label ID="HelpTextLable" runat="server" Text=""></asp:Label></p>
             <p><asp:Label ID="PrevGuessLabel" runat="server" Text=""></asp:Label></p>
         </asp:PlaceHolder>
 
-        <asp:PlaceHolder ID="NewButtonPlaceHolder" runat="server" Visible="True">
-            <asp:Button ID="NewNumberButton" runat="server" Text="New Game" OnClick="Startover_Click" CausesValidation="False" autofocus="autofocus" />
-
+        <%-- Nytt spel --%>
+        <asp:PlaceHolder ID="NewButtonPlaceHolder" runat="server" Visible="false">
+            <asp:Button ID="NewNumberButton" runat="server" Text="New Game" OnClick="Startover_Click" CausesValidation="False" CssClass="aspNetDisabled aspNetDisabled aspNetDisabled aspNetDisabled aspNetDisabled"/>
         </asp:PlaceHolder>
-
 
     </div>
     </form>
