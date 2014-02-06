@@ -33,7 +33,7 @@ namespace hemliga_talet
         {
             if (IsValid)
             {
-                //Ger Innput focus
+                //Ger Input focus
                 Page.SetFocus(Input);
 
                 //Deklarerar en ny secret number. (Kommer inte ihåg ordet för det)
@@ -43,6 +43,7 @@ namespace hemliga_talet
                 }
 
                 int input = int.Parse(Input.Text);
+                NewNumberButton.Enabled = true;//Visar knappen, ta bort om kanppen ska va borta
 
                 //Ropar på MakeGuess i secretnumber classen.
                 SecretNumber.MakeGuess(input);
@@ -67,20 +68,16 @@ namespace hemliga_talet
                 {//Gissade rätt
                     HelpTextLable.Text = String.Format("Grattis! Du klarade det på {0} gissningar.", SecretNumber.Count);
                 }
-                //Visar felmedelande
-                
-
                 //Om man inte kan gissa mer
                 if (!SecretNumber.CanMakeGuess)
                 {
                     SendGuessButton.Enabled = false;//Dissable gissa knapp
                     Input.Enabled = false;//Disable input
                     Page.SetFocus(NewNumberButton);//Get Nytt spelknappen focus
-                    NewButtonPlaceHolder.Visible = true;//Visar nya knappen
+                    //NewButtonPlaceHolder.Visible = true; //Om mkanppen ska vara onsynlig
                 }
-                
-                
             }//if
+
             //Om helptext inte har nått värde har man gett fel input. 
             if (HelpTextLable.Text == "")
             {
@@ -93,11 +90,12 @@ namespace hemliga_talet
                 PrevGuessLabel.Text = string.Join(", ", SecretNumber.PreviousGuesses);
             }
         }//gissa knapp
+
         protected void Startover_Click(object sender, EventArgs e) 
         {   //Startar ett nytt spel
             SecretNumber.Initialize();
 
-            SendGuessButton.Enabled = true;//Enablar och ger focus till input och gisa knappen
+            SendGuessButton.Enabled = true;//Enablar och ger focus till input och gissa knappen
             Input.Enabled = true;
             Page.SetFocus(Input);
         }//Startover knapp

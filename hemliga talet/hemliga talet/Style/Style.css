@@ -14,20 +14,12 @@
     margin-bottom: 20px;
     
 }
-.radio{
-    Font-Size: 10pt;
-    Font: bold italic;  
-}
-.button{
-    margin-top: 20px;
-}
 .error {
      Font-style: Italic;
      Font-Size: 10pt; 
      Color: Red;
-    margin-top: 0px;
+     margin-top: 0px;
 }
-
 form {
     width: 600px;
     height: auto;

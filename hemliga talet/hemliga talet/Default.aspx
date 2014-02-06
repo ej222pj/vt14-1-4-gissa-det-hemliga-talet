@@ -22,13 +22,13 @@
         </div>
 
         <div>
-            <asp:TextBox ID="Input" runat="server" Enabled="True" autofocus="autofocus"></asp:TextBox>
+            <asp:TextBox ID="Input" runat="server" autofocus="autofocus"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Ett tal måste anges" ControlToValidate="Input"  CssClass="error" Text="*" Display="Dynamic" />
                 <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Ange ett tal mellan 1-100" MaximumValue="100" MinimumValue="1" ControlToValidate="Input" Display="Dynamic"  CssClass="error" Type="Integer" Text="*" />
         </div>
         <%-- Skicka talet --%>
         <div>
-            <asp:Button ID="SendGuessButton" runat="server" Text="Guess" OnClick="Guess_Click"/>
+            <asp:Button ID="SendGuessButton" runat="server" Text="Guess" OnClick="Guess_Click" />
         </div>
 
         <%--Visa felmedelande --%>
@@ -38,8 +38,8 @@
         </asp:PlaceHolder>
 
         <%-- Nytt spel --%>
-        <asp:PlaceHolder ID="NewButtonPlaceHolder" runat="server" Visible="false">
-            <asp:Button ID="NewNumberButton" runat="server" Text="New Game" OnClick="Startover_Click" CausesValidation="False"/>
+        <asp:PlaceHolder ID="NewButtonPlaceHolder" runat="server">
+            <asp:Button ID="NewNumberButton" runat="server" Text="New Game" OnClick="Startover_Click" CausesValidation="False" Enabled="False" />
         </asp:PlaceHolder>
 
     </div>
