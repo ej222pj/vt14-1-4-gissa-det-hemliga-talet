@@ -14,34 +14,20 @@ namespace hemliga_talet
         {
             get
             {
-                return Session["SecretNumber"] as SecretNumber;
-            }
-            set
-            {
-                if (value is SecretNumber)
-                {
-                    Session["SecretNumber"] = value;
-                }
+                return Session["SecretNumber"] as SecretNumber ?? (SecretNumber)(Session["SecretNumber"] = new SecretNumber());
             }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            //Ger Input focus
+            Page.SetFocus(Input);
         }
 
         protected void Guess_Click(object sender, EventArgs e)
         {
             if (IsValid)
             {
-                //Ger Input focus
-                Page.SetFocus(Input);
-
-                //Deklarerar en ny secret number. (Kommer inte ihåg ordet för det)
-                if (SecretNumber == null)
-                {
-                    SecretNumber = new SecretNumber();
-                }
-
                 int input = int.Parse(Input.Text);
                 NewNumberButton.Enabled = true;//Visar knappen, ta bort om kanppen ska va borta
 
@@ -97,7 +83,6 @@ namespace hemliga_talet
 
             SendGuessButton.Enabled = true;//Enablar och ger focus till input och gissa knappen
             Input.Enabled = true;
-            Page.SetFocus(Input);
         }//Startover knapp
     }//Class
 }//Namespace

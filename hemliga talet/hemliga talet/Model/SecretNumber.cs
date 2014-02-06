@@ -19,13 +19,12 @@ namespace hemliga_talet.Model
         {
             get
             {
-                return !(Count >= MaxNumberOfGuesses || Outcome == Outcome.Correct);
+                return Count < MaxNumberOfGuesses && Outcome != Outcome.Correct;
             }
         }
         public int Count
         {
-            get;
-            private set;
+            get { return _previousGuesses.Count; }
         }
         public int? Number
         {
@@ -44,7 +43,7 @@ namespace hemliga_talet.Model
         public Outcome Outcome { get; private set; }
         public ReadOnlyCollection<int> PreviousGuesses
         {
-            get { return new ReadOnlyCollection<int>(_previousGuesses); }
+            get { return _previousGuesses.AsReadOnly(); }
         }
         public SecretNumber()
         {
@@ -58,57 +57,45 @@ namespace hemliga_talet.Model
             //Nytt nummer
             Random randomNumber = new Random();
             _number = randomNumber.Next(1, 101);
-            //Nollställer Count
-            Count = 0;
+
             //Tar bort alla gamla gissningar
             _previousGuesses.Clear();
         }
         public Outcome MakeGuess(int guess)
         {
-            if (CanMakeGuess)
+            if (!CanMakeGuess)
             {
-                if (guess >= 1 && guess <= 100)
-                {
-                    
-                    if (PreviousGuesses.Contains(guess))
-                    {
-                        Outcome = Outcome.PreviousGuess;
-                        return Outcome.PreviousGuess;
-                    }
-                    _previousGuesses.Add(guess);
-
-                    Count++;
-                    if (Count == MaxNumberOfGuesses)
-                    {
-                        Outcome = Outcome.NoMoreGuesses;
-                        return Outcome.NoMoreGuesses;
-                    }
-                    
-                    if (guess < _number)
-                    {
-                        Outcome = Outcome.Low;
-                        return Outcome.Low;
-                    }
-                    else if (guess > _number)
-                    {
-                        Outcome = Outcome.High;
-                        return Outcome.High;
-                    }
-                    else
-                    {
-                        Outcome = Outcome.Correct;
-                        return Outcome.Correct;
-                    }
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
+                throw new Exception();
             }
-            else 
+
+            if (guess < 1 || guess > 100)
             {
                 throw new ArgumentOutOfRangeException();
             }
+
+            if (PreviousGuesses.Contains(guess))
+            {
+                Outcome = Outcome.PreviousGuess;
+            }
+            else
+            {
+                _previousGuesses.Add(guess);
+
+                if (guess < _number)
+                {
+                    Outcome = Outcome.Low;
+                }
+                else if (guess > _number)
+                {
+                    Outcome = Outcome.High;
+                }
+                else
+                {
+                    Outcome = Outcome.Correct;
+                }
+            }
+
+            return Outcome;
         }
         
     }
